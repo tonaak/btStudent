@@ -40,3 +40,8 @@ public class DeleteServlet extends HttpServlet {
     response.sendRedirect("success.jsp");
   }
 }
+
+String path = "./file.txt";
+System.out.println("Relative path: " + path);
+String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+System.out.println("Absolute path: " + path);

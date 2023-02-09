@@ -1,3 +1,5 @@
+if ("".equals(userId))
+
 <form action="deleteServlet" method="post">
   <input type="checkbox" name="id" value="1">
   <input type="checkbox" name="id" value="2">

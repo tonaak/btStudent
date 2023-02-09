@@ -1,0 +1,42 @@
+<form action="deleteServlet" method="post">
+  <input type="checkbox" name="id" value="1">
+  <input type="checkbox" name="id" value="2">
+  <input type="checkbox" name="id" value="3">
+  ...
+  <input type="submit" value="Delete">
+</form>
+
+
+------------------------------------------------------------
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/deleteServlet")
+public class DeleteServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
+
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    String[] ids = request.getParameterValues("id");
+
+    try (Connection conn = ...;) {
+      String sql = "DELETE FROM table_name WHERE id = ?";
+      PreparedStatement stmt = conn.prepareStatement(sql);
+      for (String id : ids) {
+        stmt.setInt(1, Integer.parseInt(id));
+        stmt.executeUpdate();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    response.sendRedirect("success.jsp");
+  }
+}

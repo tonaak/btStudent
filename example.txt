@@ -47,3 +47,36 @@ String path = "./file.txt";
 System.out.println("Relative path: " + path);
 String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 System.out.println("Absolute path: " + path);
+
+		String from = "0000/00/00";
+		String to = "9999/99/99";
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		System.out.println(sdf.parse(from).before(sdf.parse(to)));
+
+
+public void deleteUserData(String[] userIds) {
+    Connection connection = null;
+    try {
+        Class.forName(SQL_DRIVER);
+        connection = DriverManager.getConnection(SQL_URL, SQL_USERNAME, SQL_PASSWORD);
+        String sql = "UPDATE users SET username = NULL, birthday = NULL, deletedate = CURRENT_TIMESTAMP WHERE userid IN (?"
+                + String.join(",?", Collections.nCopies(userIds.length - 1, "?")) + ")";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        for (int i = 0; i < userIds.length; i++) {
+            statement.setString(i + 1, userIds[i]);
+        }
+        statement.executeUpdate();
+    } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+

@@ -80,3 +80,57 @@ public void deleteUserData(String[] userIds) {
     }
 }
 
+
+List<User> userList = //populate the list of User objects
+request.setAttribute("userList", userList);
+
+<table>
+  <tr>
+    <th>User ID</th>
+    <th>User Name</th>
+    <th>Email</th>
+  </tr>
+  <logic:iterate name="userList" id="user" scope="request">
+    <tr>
+      <td><bean:write name="user" property="userId"/></td>
+      <td><bean:write name="user" property="userName"/></td>
+      <td><bean:write name="user" property="email"/></td>
+    </tr>
+  </logic:iterate>
+</table>
+
+public class MyAction extends Action {
+  public ActionForward execute(ActionMapping mapping, ActionForm form,
+    HttpServletRequest request, HttpServletResponse response)
+      throws Exception {
+
+    // Cast the ActionForm objects to the appropriate types
+    MyForm myForm = (MyForm) form;
+    OtherForm otherForm = (OtherForm) request.getAttribute("otherForm");
+
+    // Modify the ActionForm objects as needed
+    myForm.setSomeProperty("some value");
+    otherForm.setOtherProperty("other value");
+
+    // Forward to the JSP
+    return mapping.findForward("success");
+  }
+}
+
+public class OtherAction extends Action {
+  public ActionForward execute(ActionMapping mapping, ActionForm form,
+    HttpServletRequest request, HttpServletResponse response)
+      throws Exception {
+
+    // Create an instance of OtherForm and set some properties
+    OtherForm otherForm = new OtherForm();
+    otherForm.setOtherProperty("some value");
+
+    // Set the OtherForm object in the request attributes
+    request.setAttribute("otherForm", otherForm);
+
+    // Forward to the JSP
+    return mapping.findForward("success");
+  }
+}
+
